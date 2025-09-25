@@ -70,8 +70,8 @@ func getAllBooks(c *gin.Context) {
     var rows *sql.Rows
     var err error
     // ลูกค้าถาม "มีหนังสืออะไรบ้าง"
-	if yearInput == "" {
-		rows, err = db.Query("SELECT id, title, author, isbn, year, price, created_at, updated_at FROM books WEHRE year=$1", yearInput)
+	if yearInput != "" {
+		rows, err = db.Query("SELECT id, title, author, isbn, year, price, created_at, updated_at FROM books WHERE year = $1", yearInput,)
 	}else {
 		rows, err = db.Query("SELECT id, title, author, isbn, year, price, created_at, updated_at FROM books")
 	}
