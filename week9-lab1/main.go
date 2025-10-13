@@ -93,6 +93,35 @@ func getAllBooks(c *gin.Context) {
 
 }
 
+func getNewBooks(c *gin.Context) {
+    var rows *sql.Rows
+    var err error
+    // ลูกค้าถาม "มีหนังสืออะไรบ้าง"
+    rows, err = db.Query("SELECT id, title, author, isbn, year, price, created_at, updated_at FROM books order by created_at desc limit 5")
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+    defer rows.Close() // ต้องปิด rows เสมอ เพื่อคืน Connection กลับ pool
+
+    var books []Book
+    for rows.Next() {
+        var book Book
+        err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.ISBN, &book.Year, &book.Price, &book.CreatedAt, &book.UpdatedAt)
+        if err != nil {
+            // handle error
+        }
+        books = append(books, book)
+    }
+	if books == nil {
+		books = []Book{}
+	}
+
+	c.JSON(http.StatusOK, books)
+
+
+}
+
 func getBook(c *gin.Context) {
 
     id := c.Param("id")
@@ -218,6 +247,7 @@ func main() {
 	api := r.Group("/api/v1")
 	{
 	 	api.GET("/books", getAllBooks)
+        api.GET("/books/new", getNewBooks)
 	 	api.GET("/books/:id", getBook)
 	 	api.POST("/books", createBook)
 	 	api.PUT("/books/:id", updateBook)
