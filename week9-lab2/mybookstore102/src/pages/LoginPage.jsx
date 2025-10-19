@@ -16,14 +16,14 @@ const LoginPage = () => {
     if (username === 'bookstoreadmin' && password === 'ManageBook68') {
       // Store authentication token/flag
       localStorage.setItem('isAdminAuthenticated', 'true');
-      navigate('/store-manager/add-book');
+      navigate('/store-manager/all-book');//add-book
     } else {
       setError('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-viridian-600 to-green-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-green-500 to-green-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="mx-auto h-16 w-16 bg-white rounded-full flex items-center justify-center">
